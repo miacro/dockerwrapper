@@ -11,6 +11,12 @@ with open(
 
 requirements = [
     'PyYaml',
+    'pyconfigmanager',
+]
+
+dependency_links = [
+    """git+https://github.com/miacro/pyconfigmanager.git\
+@master#egg=pyconfigmanager-9999"""
 ]
 
 
@@ -53,4 +59,5 @@ setup(
     scripts=get_scripts(),
     ext_modules=[],
     package_data={'dockerwrapper': get_package_data()},
+    dependency_links=dependency_links,
 )
