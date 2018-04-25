@@ -2,6 +2,32 @@ registry:
   - name: docker
     url: hub.docker.com
 build:
-  arg:
-  - https_proxy=
-  - http_proxy=
+  path: .
+  tag:
+  quiet: false
+  nocache: false
+  rm: true
+  timeout:
+  encoding: utf8
+  pull:
+    $type: bool
+    value: true
+  forcerm: false
+  dockerfile:
+  buildargs:
+    https_proxy:
+    http_proxy:
+  container_limits:
+    memory:
+    memswap:
+    cpushares:
+    cpusetcpus:
+  shmsize:
+  labels:
+  cache_from:
+  target:
+  network_mode:
+  squash:
+  extra_hosts:
+  platform:
+  isolation:
