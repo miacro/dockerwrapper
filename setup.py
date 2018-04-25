@@ -19,7 +19,6 @@ dependency_links = [
     """git+https://github.com/miacro/{}.git@master#egg={}-9999""".format(
         "pyconfigmanager", "pyconfigmanager")
 ]
-dependency_links = []
 
 
 def get_scripts():
