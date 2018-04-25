@@ -1,0 +1,7 @@
+registry:
+  - name: docker
+    url: hub.docker.com
+build:
+  arg:
+  - https_proxy=
+  - http_proxy=

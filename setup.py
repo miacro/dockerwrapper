@@ -13,7 +13,7 @@ with open(
     exec(version_file.read())
 
 requirements = [
-    'PyYaml',
+    'docker',
 ]
 dependency_links = [
     """git+https://github.com/miacro/{}.git@master#egg={}-9999""".format(
