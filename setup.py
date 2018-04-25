@@ -2,45 +2,54 @@
 from setuptools import setup, find_packages
 import os
 import glob
+import re
 version = None
+package_name = "dockerwrapper"
 
 with open(
-        os.path.join(os.path.dirname(__file__),
-                     'dockerwrapper/version.py')) as version_file:
+        os.path.join(
+            os.path.dirname(__file__),
+            '{}/version.py'.format(package_name))) as version_file:
     exec(version_file.read())
 
 requirements = [
     'PyYaml',
-    'pyconfigmanager',
 ]
-
 dependency_links = [
-    """git+https://github.com/miacro/pyconfigmanager.git\
-@master#egg=pyconfigmanager-9999"""
+    """git+https://github.com/miacro/{}.git@master#egg={}-9999""".format(
+        "pyconfigmanager", "pyconfigmanager")
 ]
+dependency_links = []
 
 
 def get_scripts():
     result = []
     for item in glob.glob(
-            os.path.join(os.path.dirname(__file__), "dockerwrapper/bin/*")):
+            os.path.join(
+                os.path.dirname(__file__), "{}/bin/*".format(package_name))):
         if os.access(item, os.X_OK):
             result.append(item)
     return result
 
 
 def get_package_data():
-    pattern = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "dockerwrapper",
-        "*.yaml")
-    return glob.glob(pattern)
+    directory = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), package_name)
+    return [
+        filename
+        for ext in ("json", "yaml") for filename in glob.glob(
+            os.path.join(directory, "**", "*.{}".format(ext)), recursive=True)
+        if all(
+            re.match(os.path.join(directory, pattern, ".*"), filename) is None
+            for pattern in ("test", "tests"))
+    ]
 
 
 long_description = ''
 setup(
-    name='dockerwrapper',
+    name=package_name,
     version=version,
-    description='dockerwrapper',
+    description=package_name,
     long_description=long_description,
     url='',
     author='miacro',
@@ -58,6 +67,6 @@ setup(
     ],
     scripts=get_scripts(),
     ext_modules=[],
-    package_data={'dockerwrapper': get_package_data()},
+    package_data={package_name: get_package_data()},
     dependency_links=dependency_links,
 )
