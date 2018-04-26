@@ -25,7 +25,9 @@ def main():
     logging.info(config.build.values())
     client = docker.from_env()
     return
-    client.images.build(**config.build.values())
+    image, logs = client.images.build(**config.build.values())
+    for line in logs:
+        print(line)
 
 
 if __name__ == "__main__":

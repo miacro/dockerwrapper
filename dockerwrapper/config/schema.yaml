@@ -2,32 +2,84 @@ registry:
   - name: docker
     url: hub.docker.com
 build:
-  path: .
+  path:
+    $type: str
+    $help: "Path to the directory containing the Dockerfile"
   tag:
-  quiet: false
-  nocache: false
-  rm: true
+    $type: str
+    help: "A tag to add to the final image"
+  quiet:
+    $value: false
+    help: "Whether to return the status"
+  nocache:
+    $value: false
+    help: "Don’t use the cache when set to True"
+  rm:
+    $type: bool
+    help: "Remove intermediate containers. The docker build command now defaults to --rm=true, but we have kept the old default of False to preserve backward compatibility"
   timeout:
-  encoding: utf8
+    $type: int
+    help: "HTTP timeout"
+  encoding:
+    $type: str
+    help: "The encoding for a stream. Set to gzip for compressing"
   pull:
     $type: bool
-    value: true
-  forcerm: false
+    help: "Downloads any updates to the FROM image in Dockerfiles"
+  forcerm:
+    $type: bool
+    help: "Always remove intermediate containers, even after unsuccessful builds"
   dockerfile:
+    $type: str
+    help: "path within the build context to the Dockerfile"
   buildargs:
-    https_proxy:
-    http_proxy:
+    $type: dict
+    value:
+      https_proxy:
+      http_proxy:
+    help: "A dictionary of build arguments"
   container_limits:
+    # A dictionary of limits applied to each container created by the build process.
     memory:
+      $type: int
+      help: "set memory limit for build"
     memswap:
+      $type: int
+      help: "Total memory (memory + swap), -1 to disable swap"
     cpushares:
+      $type: int
+      help: "CPU shares (relative weight)"
     cpusetcpus:
+      $type: str
+      help: 'CPUs in which to allow execution, e.g., "0-3", "0,1"'
   shmsize:
+    type: int
+    $help: "Size of /dev/shm in bytes. The size must be greater than 0. If omitted the system uses 64MB"
   labels:
+    $type: dict
+    help: "A dictionary of labels to set on the image"
   cache_from:
+    $type: list
+    help: "A list of images used for build cache resolution"
   target:
+    $type: str
+    help: "Name of the build-stage to build in a multi-stage Dockerfile"
   network_mode:
+    $type: str
+    help: "networking mode for the run commands during build"
   squash:
+    $type: bool
+    help: "Squash the resulting images layers into a single layer"
   extra_hosts:
+    $type: dict
+    help: "Extra hosts to add to /etc/hosts in building containers, as a mapping of hostname to IP address."
   platform:
+    $type: str
+    help: "Platform in the format os[/arch[/variant]]"
   isolation:
+    $type: str
+    help: "Isolation technology used during build. Default: None."
+
+repository:
+  - name:
+    path:
