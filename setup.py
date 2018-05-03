@@ -2,14 +2,10 @@
 from setuptools import setup, find_packages
 import os
 import glob
-import re
 version = None
 package_name = "dockerwrapper"
-
-with open(
-        os.path.join(
-            os.path.dirname(__file__),
-            '{}/version.py'.format(package_name))) as version_file:
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+with open('{}/version.py'.format(package_name)) as version_file:
     exec(version_file.read())
 
 requirements = [
@@ -23,25 +19,10 @@ dependency_links = [
 
 def get_scripts():
     result = []
-    for item in glob.glob(
-            os.path.join(
-                os.path.dirname(__file__), "{}/bin/*".format(package_name))):
+    for item in glob.glob("{}/bin/*".format(package_name)):
         if os.access(item, os.X_OK):
             result.append(item)
     return result
-
-
-def get_package_data():
-    directory = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), package_name)
-    return [
-        filename
-        for ext in ("json", "yaml") for filename in glob.glob(
-            os.path.join(directory, "**", "*.{}".format(ext)), recursive=True)
-        if all(
-            re.match(os.path.join(directory, pattern, ".*"), filename) is None
-            for pattern in ("test", "tests"))
-    ]
 
 
 long_description = ''
@@ -66,6 +47,7 @@ setup(
     ],
     scripts=get_scripts(),
     ext_modules=[],
-    package_data={package_name: get_package_data()},
+    package_data={package_name: ["**/*.yaml", "**/*.json"]},
+    exclude_package_data={package_name: ["test*", "tests*"]},
     dependency_links=dependency_links,
 )

@@ -1,0 +1,5 @@
+registry:
+  name:
+    $type: str
+  url:
+    $type: str

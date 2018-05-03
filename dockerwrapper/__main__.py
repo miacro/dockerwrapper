@@ -10,7 +10,7 @@ def main():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="docker wrapper")
     schemafile = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "config", "schema.yaml")
+        os.path.dirname(os.path.abspath(__file__)), "config", "build.yaml")
     config = get_config(schema=[{
         key: value
         for key, value in config_helper.get_helpers().items()
@@ -24,10 +24,10 @@ def main():
     logging.info([key for key in config])
     logging.info(config.build.values())
     client = docker.from_env()
-    return
     image, logs = client.images.build(**config.build.values())
-    for line in logs:
-        print(line)
+    for log in logs:
+        if "stream" in log:
+            print(log["stream"], end="")
 
 
 if __name__ == "__main__":
