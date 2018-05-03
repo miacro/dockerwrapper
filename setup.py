@@ -47,7 +47,9 @@ setup(
     ],
     scripts=get_scripts(),
     ext_modules=[],
-    package_data={package_name: ["**/*.yaml", "**/*.json"]},
+    package_data={
+        package_name: ["**/*.yaml", "**/*.json", "*.yaml", "*.json"]
+    },
     exclude_package_data={package_name: ["test*", "tests*"]},
     dependency_links=dependency_links,
 )
